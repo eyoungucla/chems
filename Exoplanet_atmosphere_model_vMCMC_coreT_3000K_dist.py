@@ -33,7 +33,7 @@ print(" ")
 #print("    NON-IDEAL H IN METAL!!")
 #print("    NON-IDEAL H2 IN SILICATE (REGULAR SOLN)")
 #print("    NON-IDEAL H2O IN SILICATE (REGULAR SOLN)")
-print("aH2O melt = (xB_melt)^2 (e.g., Moore '95 + Stolper '82) ")
+#print("aH2O melt = (xB_melt)^2 (e.g., Moore '95 + Stolper '82) ")
 print("--------------------------------------------------")
 print("Read above! ")
 time.sleep(10.0)
@@ -1551,8 +1551,8 @@ f4_ini=0.5*ln(var[1])-ln(var[13])-lngO-0.5*ln(var[12])-0.5*lngSi+GRT4_T
 f5_ini=ln(var[7]) + lngH2 -2.0*ln(var[14])-2.0*lngHmetal +GRT5_T
 
 f6_ini=ln(var[3])+ln(var[1])-ln(var[4])+GRT6_T
-#f7_ini=ln(var[1])+2.0*ln(var[7])+2.0*lngH2-2.0*ln(var[8])-2.0*lngH2Omelt-ln(var[12])-lngSi+GRT7_T # aH2O = xH2O
-f7_ini=ln(var[1])+2.0*ln(var[7])+2.0*lngH2-4.0*ln(xB)-2.0*lngH2Omelt-ln(var[12])-lngSi+GRT7_T # aH2O = xB^2
+f7_ini=ln(var[1])+2.0*ln(var[7])+2.0*lngH2-2.0*ln(var[8])-2.0*lngH2Omelt-ln(var[12])-lngSi+GRT7_T # aH2O = xH2O
+#f7_ini=ln(var[1])+2.0*ln(var[7])+2.0*lngH2-4.0*ln(xB)-2.0*lngH2Omelt-ln(var[12])-lngSi+GRT7_T # aH2O = xB^2
 f8_ini=ln(var[17])-ln(var[16])-0.5*ln(var[19])+GRT8_T+ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd)
 f9_ini=2.0*ln(var[15])+ln(var[16])-ln(var[18])-0.5*ln(var[19])+GRT9_T+2.0*ln(P/Pstd)+ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd)
 f10_ini=ln(var[20])-0.5*ln(var[19])-ln(var[15])+GRT10_T+ln(P/Pstd)-0.5*ln(P/Pstd)-ln(P/Pstd)
@@ -1563,8 +1563,8 @@ f14_ini=0.5*ln(var[19])+2.0*ln(var[24])-ln(var[5])+GRT14_T+0.5*ln(P/Pstd)+2.0*ln
 #f15_ini=ln(var[7])-ln(var[15])+GRT15_T #fixed KD version
 #f15_ini=ln(var[7])-ln(var[15])+GRT15_T-ln(P/Pstd)
 f15_ini=ln(var[7])+lngH2-ln(var[15])+GRT15_T-ln(1.0e4/Pstd) #Fix KD at 3GPa
-f16_ini=2.0*ln(xB)-ln(var[20])+GRT16_T-ln(P/Pstd) # aH2O = xB^2
-#f16_ini=2.0*ln(var[8])+lngH2Omelt-ln(var[20])+GRT16_T-ln(P/Pstd) # aH2O =xH2O^2
+#f16_ini=2.0*ln(xB)-ln(var[20])+GRT16_T-ln(P/Pstd) # aH2O = xB^2
+f16_ini=ln(var[8])+lngH2Omelt-ln(var[20])+GRT16_T-ln(P/Pstd) # aH2O =xH2O
 f17_ini=ln(var[9])-ln(var[16])+GRT17_T-ln(P/Pstd)
 f18_ini=ln(var[10])-ln(var[17])+GRT18_T-ln(P/Pstd)
 
@@ -1721,8 +1721,8 @@ def func(var):
     f4=fm[4]*wmelt*( 0.5*ln(var[1])-ln(var[13])-lngO-0.5*ln(var[12])-0.5*lngSi+GRT4_T )
     f5=fm[5]*wmelt*( ln(var[7])+lngH2-2.0*ln(var[14])-2.0*lngHmetal +GRT5_T)
     f6=fm[6]*wmelt*( ln(var[3])+ln(var[1])-ln(var[4])+GRT6_T )
-    #f7=fm[7]*wmelt*( ln(var[1])+2.0*ln(var[7])+2.0*lngH2-2.0*ln(var[8])-2.0*lngH2Omelt-ln(var[12])-lngSi+GRT7_T ) #Includes aH2O=xH2O
-    f7=fm[7]*wmelt*( ln(var[1])+2.0*ln(var[7])+2.0*lngH2-4.0*ln(xB)-2.0*lngH2Omelt-ln(var[12])-lngSi+GRT7_T ) #Includes aH2O= xB^2
+    f7=fm[7]*wmelt*( ln(var[1])+2.0*ln(var[7])+2.0*lngH2-2.0*ln(var[8])-2.0*lngH2Omelt-ln(var[12])-lngSi+GRT7_T ) #Includes aH2O=xH2O
+    #f7=fm[7]*wmelt*( ln(var[1])+2.0*ln(var[7])+2.0*lngH2-4.0*ln(xB)-2.0*lngH2Omelt-ln(var[12])-lngSi+GRT7_T ) #Includes aH2O= xB^2
     f8=fm[8]*watm*( ln(var[17])-ln(var[16])-0.5*ln(var[19])+GRT8_T+ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd) )
     f9=fm[9]*watm*( 2.0*ln(var[15])+ln(var[16])-ln(var[18])-0.5*ln(var[19])+GRT9_T+2.0*ln(P/Pstd)+ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd) )
     f10=fm[10]*watm*(ln(var[20])-0.5*ln(var[19])-ln(var[15])+GRT10_T+ln(P/Pstd)-0.5*ln(P/Pstd)-ln(P/Pstd) )
@@ -1733,8 +1733,8 @@ def func(var):
     #f15=fm[15]*wsolub*( ln(var[7])-ln(var[15])+GRT15_T-ln(P/Pstd) ) #Keq 1bar adjusted for pressure as usual
     #f15=fm[15]*wsolub*(ln(var[7])-ln(var[15])+GRT15_T)  #fixed KD rather than Keq with pressure
     f15=fm[15]*wsolub*( ln(var[7])+lngH2-ln(var[15])+GRT15_T-ln(1.0e4/Pstd) ) #Fix KD at 1 GPa
-    f16=fm[16]*wsolub*( 2.0*ln(xB)-ln(var[20])+GRT16_T-ln(P/Pstd) ) # aH2O = xB^2
-    #f16=fm[16]*wsolub*(2.0*ln(var[8])+lngH2Omelt-ln(var[20])+GRT16_T-ln(P/Pstd) ) # aH2O =xH2O^2
+    #f16=fm[16]*wsolub*( 2.0*ln(xB)-ln(var[20])+GRT16_T-ln(P/Pstd) ) # aH2O = xB^2
+    f16=fm[16]*wsolub*(ln(var[8])+lngH2Omelt-ln(var[20])+GRT16_T-ln(P/Pstd) ) # aH2O =xH2O
     f17=fm[17]*wsolub*( ln(var[9])-ln(var[16])+GRT17_T-ln(P/Pstd) )
     f18=fm[18]*wsolub*( ln(var[10])-ln(var[17])+GRT18_T-ln(P/Pstd) )
     
@@ -2128,8 +2128,8 @@ def model(theta):
     y_model[3]=0.5*ln(theta[1])-ln(theta[13])-lngO - 0.5*ln(theta[12])-0.5*lngSi #Rxn 4
     y_model[4]=ln(theta[7])+lngH2-2.0*ln(theta[14])-2.0*lngHmetal  #Rxn 5
     y_model[5]=ln(theta[3])+ln(theta[1])-ln(theta[4]) #Rxn 6
-    #y_model[6]=ln(theta[1])+2.0*ln(theta[7])+2.0*lngH2-2.0*ln(theta[8])-2.0*lngH2Omelt-ln(theta[12])-lngSi #Rxn 7, here aH2O =xH2O
-    y_model[6]=ln(theta[1])+2.0*ln(theta[7])+2.0*lngH2-4.0*ln(xB)-2.0*lngH2Omelt-ln(theta[12])-lngSi #Rxn 7, here aH2O = xB^2
+    y_model[6]=ln(theta[1])+2.0*ln(theta[7])+2.0*lngH2-2.0*ln(theta[8])-2.0*lngH2Omelt-ln(theta[12])-lngSi #Rxn 7, here aH2O =xH2O
+    #y_model[6]=ln(theta[1])+2.0*ln(theta[7])+2.0*lngH2-4.0*ln(xB)-2.0*lngH2Omelt-ln(theta[12])-lngSi #Rxn 7, here aH2O = xB^2
     y_model[7]=ln(theta[17])-ln(theta[16])-0.5*ln(theta[19])+ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd)
     y_model[8]=2.0*ln(theta[15])+ln(theta[16])-ln(theta[18])+2.0*ln(P/Pstd)+ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd)
     y_model[9]=ln(theta[20])-0.5*ln(theta[19])-ln(theta[15])+ln(P/Pstd)-0.5*ln(P/Pstd)-ln(P/Pstd)
@@ -2138,8 +2138,8 @@ def model(theta):
     y_model[12]=0.5*ln(theta[19])+ln(theta[23])-ln(theta[1])+0.5*ln(P/Pstd)+ln(P/Pstd)
     y_model[13]=0.5*ln(theta[19])+2.0*ln(theta[24])-ln(theta[5])+0.5*ln(P/Pstd)+2.0*ln(P/Pstd)
     y_model[14]=ln(theta[7])+lngH2-ln(theta[15]) # not including Ptotal in constant, kD is fixed by DG/RT
-    y_model[15]=2.0*ln(xB)-ln(theta[20])-ln(P/Pstd) #Accounting for aH2O =xB^2
-    #y_model[15]=2.0*ln(theta[8])+lngH2Omelt-ln(theta[20])-ln(P/Pstd) #Accounting for aH2O =xH2O^2
+    #y_model[15]=2.0*ln(xB)-ln(theta[20])-ln(P/Pstd) #Accounting for aH2O =xB^2
+    y_model[15]=ln(theta[8])+lngH2Omelt-ln(theta[20])-ln(P/Pstd) #Accounting for aH2O =xH2O
     y_model[16]=ln(theta[9])-ln(theta[16])-ln(P/Pstd)
     y_model[17]=ln(theta[10])-ln(theta[17])-ln(P/Pstd)  #This is reaction 18
     #Model mass balance for elements
