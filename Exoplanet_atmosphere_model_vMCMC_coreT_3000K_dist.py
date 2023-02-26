@@ -2249,7 +2249,7 @@ print('')
 
 # INPUT MCMC PARAMETERS: Set number of independent Markov chain walkers and iterations
 nwalkers=100 #200
-niter=3000000 #2000000 works
+niter=2000000 #2000000 works
         
 # p0 is the array of initial positions for each walker, i.e., each separate
 # Markov chain operating slightly displaced at random from one another.
