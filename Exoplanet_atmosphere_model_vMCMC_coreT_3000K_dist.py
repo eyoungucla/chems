@@ -496,7 +496,7 @@ G_Okuchi97=143589.7-TK*69.1  #regression of lnk vs 1/T data in reference
 #G H2O in melt std state:
 # obtained by difference from solubility calibration, e.g., Moore et al. (1998)
 # rxn is H2O gas = H2O melt, Grxn = GmeltH2O-GgasH2O
-xH2Omelt = exp((2565.0/1500.0-14.21+1.17*ln(Pbar))/2.0) #2.0 denominator here is for aH2O = xH2O^2 used in paper
+xH2Omelt = exp((2565.0/1500.0-14.21+1.17*ln(Pbar))/2.0) # Testing, 2.0 denominator here is for aH2O = xH2O^2 used in paper
 wtpercentH2O=xH2Omelt/0.033  #Plotting vs pressure shows a match with data in Moore
 #std state values are -Hrxn/R = 2565+/- 362, Srxn/R = -14.21+/- 0.54, lnKeq=2565/T -14.21
 G_meltH2O_vaporH2O = -Rgas*TK*(2565.0/TK -14.21)  #Rxn G for H2O vapor = H2O melt for xH2O
@@ -1171,6 +1171,46 @@ for i in range(0,num-1):
 #plt.ylabel('$\mathrm{Log(K)}_{\mathrm{rxn 18}}$ gas',fontsize=12)
 #plt.legend()
 
+#REACTION 19: SiO + 3H2 = SiH4 + H2O in vapor phase
+#G SiH4 gas from NIST: 298 to 1300 K and 1300 to 6000K
+i=0
+while i < num-1:
+    if TK[i] < 1300.0:
+        ti=TK[i]/1000.0
+        a=6.060189
+        b=139.9632
+        c=-77.88474
+        d=16.24095
+        e=0.135509
+        f=27.39081
+        g=174.3351
+        h=34.30905
+        HgasSiH4=34.30905+a*ti+(b*ti**2.0)/2.0+(c*ti**3.0)/3.0+(d*ti**4.0)/4.0-(e/ti)+f-h
+        HgasSiH4=HgasSiH4*1000.0 #convert kJ to J
+        SgasSiH4=a*ln(ti)+b*ti+(c*ti**2.0)/2.0+(d*ti**3.0)/3.0-(e/(2.0*ti**2.0))+g
+        GgasSiH4=HgasSiH4-TK*SgasSiH4  #apparent G of formation for H2O gas at T and 1 bar
+    else:
+        ti=TK[i]/1000.0
+        a=99.84949
+        b=4.251530
+        c=-0.809269
+        d=0.053437
+        e=-20.39005
+        f=-40.54016
+        g=266.8015
+        h=34.30905
+        HgasSiH4=34.30905+a*ti+(b*ti**2.0)/2.0+(c*ti**3.0)/3.0+(d*ti**4.0)/4.0-(e/ti)+f-h
+        HgasSiH4=HgasSiH4*1000.0 #convert kJ to J
+        SgasSiH4=a*ln(ti)+b*ti+(c*ti**2.0)/2.0+(d*ti**3.0)/3.0-(e/(2.0*ti**2.0))+g
+        GgasSiH4=HgasSiH4-TK*SgasSiH4  #apparent G of formation for H2O gas at T and 1 bar
+    i=i+1
+#
+G19=GgasH2O + GgasSiH4 -3.0*GgasH2 - GgasSiO  #Self consistent with above
+logK19=-G19/(Rgas*TK*log_to_ln)   #at 1 bar
+GRT19=np.zeros(num)
+for i in range(0,num-1):
+    GRT19=G19/(Rgas*TK)
+
 #--------------------------------------------------------------------------------------------------------
 #PRINT RESULTING G/(RT) TERMS TO FILES:
 #
@@ -1352,6 +1392,16 @@ for i in range(0,num):
     a_file.write("%10.5e " % TK[i])
     a_file.write("")
     a_file.write("%13.8e\n" % GRT18[i])
+a_file.close()
+
+a_file = open('G19_RT.txt', 'w')
+a_file.write("T(K)      ")
+a_file.write("")
+a_file.write("  G19/(RT)\n")
+for i in range(0,num):
+    a_file.write("%10.5e " % TK[i])
+    a_file.write("")
+    a_file.write("%13.8e\n" % GRT19[i])
 a_file.close()
 
 print('')
@@ -1553,7 +1603,7 @@ f5_ini=ln(var[7]) + lngH2 -2.0*ln(var[14])-2.0*lngHmetal +GRT5_T
 f6_ini=ln(var[3])+ln(var[1])-ln(var[4])+GRT6_T
 f7_ini=ln(var[1])+2.0*ln(var[7])+2.0*lngH2-2.0*ln(var[8])-2.0*lngH2Omelt-ln(var[12])-lngSi+GRT7_T # aH2O = xH2O
 #f7_ini=ln(var[1])+2.0*ln(var[7])+2.0*lngH2-4.0*ln(xB)-2.0*lngH2Omelt-ln(var[12])-lngSi+GRT7_T # aH2O = xB^2
-f8_ini=ln(var[17])-ln(var[16])-0.5*ln(var[19])+GRT8_T+ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd)
+f8_ini=ln(var[17])+2.0*ln(var[15])-ln(var[16])-0.5*ln(var[19])+GRT8_T+ln(P/Pstd)+2.0*ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd)
 f9_ini=2.0*ln(var[15])+ln(var[16])-ln(var[18])-0.5*ln(var[19])+GRT9_T+2.0*ln(P/Pstd)+ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd)
 f10_ini=ln(var[20])-0.5*ln(var[19])-ln(var[15])+GRT10_T+ln(P/Pstd)-0.5*ln(P/Pstd)-ln(P/Pstd)
 f11_ini=0.5*ln(var[19])+ln(var[21])-ln(var[3])+GRT11_T+0.5*ln(P/Pstd)+ln(P/Pstd)
@@ -1723,7 +1773,7 @@ def func(var):
     f6=fm[6]*wmelt*( ln(var[3])+ln(var[1])-ln(var[4])+GRT6_T )
     f7=fm[7]*wmelt*( ln(var[1])+2.0*ln(var[7])+2.0*lngH2-2.0*ln(var[8])-2.0*lngH2Omelt-ln(var[12])-lngSi+GRT7_T ) #Includes aH2O=xH2O
     #f7=fm[7]*wmelt*( ln(var[1])+2.0*ln(var[7])+2.0*lngH2-4.0*ln(xB)-2.0*lngH2Omelt-ln(var[12])-lngSi+GRT7_T ) #Includes aH2O= xB^2
-    f8=fm[8]*watm*( ln(var[17])-ln(var[16])-0.5*ln(var[19])+GRT8_T+ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd) )
+    f8=fm[8]*watm*( ln(var[17])+2.0*ln(var[15])-ln(var[16])-0.5*ln(var[19])+GRT8_T+ln(P/Pstd)+2.0*ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd) )
     f9=fm[9]*watm*( 2.0*ln(var[15])+ln(var[16])-ln(var[18])-0.5*ln(var[19])+GRT9_T+2.0*ln(P/Pstd)+ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd) )
     f10=fm[10]*watm*(ln(var[20])-0.5*ln(var[19])-ln(var[15])+GRT10_T+ln(P/Pstd)-0.5*ln(P/Pstd)-ln(P/Pstd) )
     f11=fm[11]*wevap*(0.5*ln(var[19])+ln(var[21])-ln(var[3])+(GRT11_T+(DeltaV11/(Rgas*temp))*(P-Pstd))+0.5*ln(P/Pstd)+ln(P/Pstd))
@@ -2002,6 +2052,23 @@ print("solution for parameters x =",soln)
 quality=soln.fun/mean_cost
 print(" Objective function end/start =",quality)
 
+#Plot cost function at minima found during simulated annealing...
+name='progress.txt'
+values=np.genfromtxt(name,'float',delimiter="")  #Very useful function in numpy
+cost_values=values
+
+plt.plot(cost_values,linewidth=0.5,marker='o',markersize=1,markerfacecolor='white')
+plt.title('Simulated Annealing Search')
+plt.ylabel('Objective func', fontsize=12)
+plt.yscale("log")
+plt.xlabel('Succession of minima found',fontsize=12)
+plt.show(block=False)  #Permit execution to continue with plot open
+plt.pause(10) #Pause x seconds before moving on
+plt.savefig('progress.png')
+plt.close()
+
+print('Plot of simulated annealing minima saved as progress.png')
+print('')
 
 #--------------------------------------------------------------------------------------------------------
 # MCMC SEARCH STARTING WITH SIMULATED ANNEALING RESULT IN soln.x
@@ -2130,8 +2197,8 @@ def model(theta):
     y_model[5]=ln(theta[3])+ln(theta[1])-ln(theta[4]) #Rxn 6
     y_model[6]=ln(theta[1])+2.0*ln(theta[7])+2.0*lngH2-2.0*ln(theta[8])-2.0*lngH2Omelt-ln(theta[12])-lngSi #Rxn 7, here aH2O =xH2O
     #y_model[6]=ln(theta[1])+2.0*ln(theta[7])+2.0*lngH2-4.0*ln(xB)-2.0*lngH2Omelt-ln(theta[12])-lngSi #Rxn 7, here aH2O = xB^2
-    y_model[7]=ln(theta[17])-ln(theta[16])-0.5*ln(theta[19])+ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd)
-    y_model[8]=2.0*ln(theta[15])+ln(theta[16])-ln(theta[18])+2.0*ln(P/Pstd)+ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd)
+    y_model[7]=ln(theta[17])+2.0*ln(theta[15])-ln(theta[16])-0.5*ln(theta[19])+ln(P/Pstd)+2.0*ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd)
+    y_model[8]=2.0*ln(theta[15])+ln(theta[16])-ln(theta[18])-0.5*ln(theta[19])+2.0*ln(P/Pstd)+ln(P/Pstd)-ln(P/Pstd)-0.5*ln(P/Pstd)
     y_model[9]=ln(theta[20])-0.5*ln(theta[19])-ln(theta[15])+ln(P/Pstd)-0.5*ln(P/Pstd)-ln(P/Pstd)
     y_model[10]=0.5*ln(theta[19])+ln(theta[21])-ln(theta[3])+0.5*ln(P/Pstd)+ln(P/Pstd)
     y_model[11]=0.5*ln(theta[19])+ln(theta[22])-ln(theta[0])+0.5*ln(P/Pstd)+ln(P/Pstd)
@@ -2249,7 +2316,11 @@ print('')
 
 # INPUT MCMC PARAMETERS: Set number of independent Markov chain walkers and iterations
 nwalkers=100 #200
+
+# Utilize thin for emcee to return every thin'th sample
+thin=100
 niter=2000000 #2000000 works
+niter_eff = int(niter/thin) # emcee does niter*thin iteractions, so correct for this to save time
         
 # p0 is the array of initial positions for each walker, i.e., each separate
 # Markov chain operating slightly displaced at random from one another.
@@ -2274,7 +2345,7 @@ def main(p0,nwalkers,niter,n,lnprob,data):
         sampler.reset()  # reset results from sampler for actual search
     
         print("Running full MCMC search...")
-        pos, prob, state = sampler.run_mcmc(pos, niter, progress=True) # run actual search starting at burn-in position
+        pos, prob, state = sampler.run_mcmc(pos, niter_eff, progress=True, skip_initial_state_check=True, thin_by=thin) # run actual search starting at burn-in position
     
     return sampler, pos, prob, state
 
@@ -2290,6 +2361,8 @@ print('...MCMC search completed.')
 # or said another way, each row is a test position, each column is a variable.
 samples=sampler.flatchain
 posteriors=sampler.flatlnprobability
+
+print('memory required for chain = ', samples.size * samples.itemsize)
 
 # Find dimensions of the returned data for the chains
 print('sampler.flatchain shape = ',np.shape(samples))
@@ -2785,25 +2858,6 @@ for i in range(0,18):
         a_file.write("%10.5e  " %K[i])
     a_file.write('# Model KEQ for rxn %d : %s \n' %((i+1),rxn_names[i+1]))
 a_file.close()
-print('')
-
-
-#Plot cost function at minima found during simulated annealing...
-name='progress.txt'
-values=np.genfromtxt(name,'float',delimiter="")  #Very useful function in numpy
-cost_values=values
-
-plt.plot(cost_values,linewidth=0.5,marker='o',markersize=1,markerfacecolor='white')
-plt.title('Simulated Annealing Search')
-plt.ylabel('Objective func', fontsize=12)
-plt.yscale("log")
-plt.xlabel('Succession of minima found',fontsize=12)
-plt.show(block=False)  #Permit execution to continue with plot open
-plt.pause(10) #Pause x seconds before moving on
-plt.savefig('progress.png')
-plt.close()
-
-print('Plot of simulated annealing minima saved as progress.png')
 print('')
 
 # plot histogram of posteriors
