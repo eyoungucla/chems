@@ -1,0 +1,71 @@
+0.032 # MgO melt
+0.001 # SiO2 melt
+0.9211 #MgSiO3 melt
+0.0005 #FeO melt, make small
+0.0005 #FeSiO3 melt, 0.15 gives -1.55 for DIW at 0.9 xFe metal or 0.09 for -2
+0.007 #Na2O melt
+0.001 #Na2SiO3 melt
+1.0e-9 #H2 melt
+1.0e-9 #H2O melt
+1.0e-9 #CO melt
+1.0e-9 #CO2 melt
+0.99 #Fe metal
+1.0e-9 #Si metal
+1.0e-9 #O metal
+1.0e-9 #H metal
+0.999  #H2 gas
+0.001  #CO gas
+1.0e-9  #CO2 gas
+1.0e-9  #CH4 gas
+1.0e-9  #O2 gas
+1.0e-9  #H2O gas
+1.0e-9 #Fe gas
+1.0e-9 #Mg gas
+1.0e-9 #SiO gas
+1.0e-9 #Na gas
+1.0e-13 #SiH4 gas
+2300.0  #Moles atm, 250 is nominal  
+2000.0  #Moles silicate, 
+1800.0 #Moles metal 
+4.78 #Planet mass in Earth masses 0.5
+3500.0 #surface T in K for 3000K at core-mantle boundary
+300.0  #pressure penalty (weight)
+1.5  # Weight factor for mass balance: wt_massbalance
+0.5 # Weight factor for mole fraction sum constraints: wt_summing
+1.0 #weight for atmosphere reactions: watm_m
+1.0 #weight for solubility reactions: wsolub_m
+5.0 #weight for intra-melt reactions: wmelt_m
+5.0 # weight for evaporation reactions: wevap_m
+1.0 #weight for f1: Na2SiO3 = Na2O + SiO2
+1.0 #weight for f2: 1/2SiO2 + Fe = FeO + 1/2Si
+1.0 #weight for f3: MgSiO3 = MgO + SiO2
+1.0 #weight for f4: O + 1/2Si = 1/2SiO2
+1.0 #weight for f5: 2Hmetal=H2,sil
+1.0 #weight for f6: FeSiO3 = FeO + SiO2
+2.0 #weight for f7: 2H2O,sil + Si=SiO2 + 2H2,sil
+1.0 #weight for f8: CO,g + 1/2O2 = CO2,g
+1.0 #weight for f9: CH4,g + 1/2O2 = 2H2,g + CO,g
+5.0 #weight for f10: H2,g + 1/2O2 = H2O,g
+1.0 #weight for f11: FeO = Fe,g + 1/2O2
+1.0 #weight for f12: MgO = Mg,g + 1/2O2
+1.0 #weight for f13: SiO2 = SiO,g + 1/2O2
+1.0 #weight for f14: Na2O = 2Na,g + 1/2O2
+0.5 #weight for f15: H2,g = H2,sil
+1.0 #weight for f16: H2O,g = H2O,sil
+2.0 #weight for f17: CO,g = CO,sil
+1.0 #weight for f18: CO2,g = CO2,sil
+1.0 #weight for f19: SiO + 3H2 = SiH4 + H2O
+1.0 #weight for f20: Sum Si
+1.0 #weight for f21: Sum Mg
+5.0 #weight for f22: Sum O
+1.0 #weight for f23: Sum Fe
+5.0 #weight for f24: Sum H
+1.0 #weight for f25: Sum Na
+1.0 #weight for f26: Sum C
+1.0 #weight for f27: melt mole fraction sum 
+1.0 #weight for f28: metal mole fraction sum
+1.0 #weight for f29: atmosphere mole fraction sum
+0 #integer seed, if 0 then seed is chosen randomly  36
+2000 #of iterations at each temperature 20000
+1.0e-06  #Offset in random positions of MCMC walkers, e.g. 1e-7 for xB or 1e-9 for xH2O
+3500.0 # Core-mantle equilibration temperature
