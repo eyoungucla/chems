@@ -1,3 +1,3 @@
-Exoplanet_atmosphere_model_vMCMC_coreT_3000K_dist.py is a version of the simulated annealing/MCMC code used to model planetary embryo chemical equilibrium in Young et al. (2023, Nature).
-Input file initial_atm_vMCMC.txt includes initial conditions and the potential temperature assuming a core-mantle temperature of 3000K. 
-Initial moles of H2 are varied as needed in the input file to derive solutions for different mass fractions of primary atmosphere.
+Exoplanet_atmosphere_model_vMCMC_SiH4_2024_xB.py is a version of the simulated annealing/MCMC code used to model planetary embryo chemical equilibrium in Young et al. (2023, Nature).
+Input file initial_atm_vMCMC_2024.txt includes requisite inputs (note there are two temperatures, one for the atmosphere-melt boundary and one for the core-mantle boundary. 
+This update includes silane in the gas phase and treating water as OH in the melt phase.  
